@@ -1,4 +1,4 @@
-package com.smh.foodapp.ui.theme
+package com.smh.foodapp.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

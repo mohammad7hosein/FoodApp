@@ -3,6 +3,9 @@ package com.smh.foodapp.util
 class Constants {
 
     companion object {
+
+        const val TAG = "FoodDebug"
+
         const val BASE_URL = "https://api.spoonacular.com"
         const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
         const val API_KEY = "efde670be5db42d1a4fbced07620c5f7"
@@ -24,6 +27,7 @@ class Constants {
         const val RECIPES_TABLE = "recipes_table"
         const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
         const val FOOD_JOKE_TABLE = "food_joke_table"
+        const val RECIPE_PAGINATION_PAGE_SIZE = 30
 
         // Bottom Sheet and Preferences
         const val PREFERENCES_NAME = "foody_preferences"

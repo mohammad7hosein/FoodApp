@@ -1,6 +1,7 @@
 package com.smh.foodapp.domain.model
 
 import android.os.Parcelable
+import com.smh.foodapp.data.local.entity.RecipeEntity
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -21,4 +22,13 @@ data class Recipe(
     val vegan: Boolean,
     val vegetarian: Boolean,
     val veryHealthy: Boolean,
-) : Parcelable
+) : Parcelable {
+
+    fun toRecipeEntity(): RecipeEntity {
+        return RecipeEntity(
+            id = id,
+            recipe = this
+        )
+    }
+
+}

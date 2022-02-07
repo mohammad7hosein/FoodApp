@@ -1,5 +1,6 @@
 package com.smh.foodapp.presentation.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -39,7 +40,7 @@ fun BottomNavigationBar(
                 unselectedContentColor = Color.Gray,
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.icon),
+                        painter = painterResource(id = if (selected) item.selectedIconId else item.unSelectedIconId),
                         contentDescription = item.name
                     )
                 }
@@ -51,5 +52,6 @@ fun BottomNavigationBar(
 data class BottomNavItem(
     val name: String,
     val route: String,
-    val icon: Int,
+    @DrawableRes val unSelectedIconId: Int,
+    @DrawableRes val selectedIconId: Int
 )

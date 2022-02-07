@@ -35,17 +35,20 @@ class MainActivity : ComponentActivity() {
                                     BottomNavItem(
                                         name = "Favorite",
                                         route = "favorite",
-                                        icon = R.drawable.ic_bookmark
+                                        unSelectedIconId = R.drawable.ic_bookmark,
+                                        selectedIconId = R.drawable.ic_fill_bookmark
                                     ),
                                     BottomNavItem(
                                         name = "Recipes",
                                         route = "recipes",
-                                        icon = R.drawable.ic_dashboard,
+                                        unSelectedIconId = R.drawable.ic_dashboard,
+                                        selectedIconId = R.drawable.ic_fill_dashboard
                                     ),
                                     BottomNavItem(
                                         name = "FoodJoke",
                                         route = "food_joke",
-                                        icon = R.drawable.ic_joker,
+                                        unSelectedIconId = R.drawable.ic_joker,
+                                        selectedIconId = R.drawable.ic_fill_joker
                                     ),
                                 ),
                                 navController = navController,

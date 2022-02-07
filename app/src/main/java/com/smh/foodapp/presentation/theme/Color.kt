@@ -7,7 +7,7 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
-val LightWhite = Color(0xFFD7E8DE)
+val DarkGray = Color(0xFF666666)
 val SearchBackground = Color(0xADADADAD)
 val Border = Color(0x65656565)
 val Red = Color(0xFFFF4646)

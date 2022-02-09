@@ -1,4 +1,4 @@
-package com.smh.foodapp.data.local
+package com.smh.foodapp.data.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

@@ -1,4 +1,4 @@
-package com.smh.foodapp.domain
+package com.smh.foodapp.domain.model
 
 sealed class DataState<T>(
     val data: T? = null,

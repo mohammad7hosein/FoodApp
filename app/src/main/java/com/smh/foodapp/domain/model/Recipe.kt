@@ -1,7 +1,7 @@
 package com.smh.foodapp.domain.model
 
 import android.os.Parcelable
-import com.smh.foodapp.data.local.entity.RecipeEntity
+import com.smh.foodapp.data.database.entity.RecipeEntity
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

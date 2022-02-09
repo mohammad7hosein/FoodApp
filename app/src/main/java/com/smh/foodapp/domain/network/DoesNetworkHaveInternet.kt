@@ -1,4 +1,4 @@
-package com.smh.foodapp.domain.use_case.network
+package com.smh.foodapp.domain.network
 
 import android.util.Log
 import com.smh.foodapp.util.Constants.Companion.TAG

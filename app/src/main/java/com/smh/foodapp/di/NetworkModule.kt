@@ -1,7 +1,7 @@
 package com.smh.foodapp.di
 
 import com.google.gson.GsonBuilder
-import com.smh.foodapp.data.remote.RecipeService
+import com.smh.foodapp.data.api.RecipeService
 import com.smh.foodapp.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides

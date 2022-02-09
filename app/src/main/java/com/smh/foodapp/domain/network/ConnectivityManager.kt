@@ -1,4 +1,4 @@
-package com.smh.foodapp.util
+package com.smh.foodapp.domain.network
 
 import android.app.Application
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package com.smh.foodapp.util
+package com.smh.foodapp.domain.network
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
@@ -8,7 +8,6 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.smh.foodapp.domain.use_case.network.DoesNetworkHaveInternet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

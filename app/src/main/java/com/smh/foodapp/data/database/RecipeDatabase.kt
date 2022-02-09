@@ -1,10 +1,10 @@
-package com.smh.foodapp.data.local
+package com.smh.foodapp.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.smh.foodapp.data.local.entity.FavoriteEntity
-import com.smh.foodapp.data.local.entity.RecipeEntity
+import com.smh.foodapp.data.database.entity.FavoriteEntity
+import com.smh.foodapp.data.database.entity.RecipeEntity
 
 @Database(
     entities = [RecipeEntity::class, FavoriteEntity::class],

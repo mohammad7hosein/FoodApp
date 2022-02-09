@@ -1,5 +1,7 @@
 package com.smh.foodapp.presentation.ui.RecipeList
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smh.foodapp.data.database.RecipeDao
@@ -22,6 +24,7 @@ import com.smh.foodapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.smh.foodapp.util.Constants.Companion.QUERY_NUMBER
 import com.smh.foodapp.util.Constants.Companion.QUERY_SEARCH
 import com.smh.foodapp.util.Constants.Companion.QUERY_TYPE
+import com.smh.foodapp.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -43,13 +46,24 @@ class RecipeListViewModel @Inject constructor(
     private var cuisineType = DEFAULT_CUISINE_TYPE
     val filterType = dataStore.readFilterType
 
+    private val _state = mutableStateOf(RecipeListState())
+    val state : State<RecipeListState> = _state
+
+    val dialogQueue = DialogQueue()
+
+    init {
+
+    }
+
+    fun onEvent(event: RecipeListEvent) {
+
+    }
 
     fun getRecipes(queries: Map<String, String>): Flow<DataState<List<Recipe>>> = flow {
         emit(DataState.Loading())
         try {
             if (connectivityManager.isNetworkAvailable.value) {
                 val response = handleRecipeResponse(recipeService.getRecipes(queries))
-                // cache recipe
                 emit(response)
             }
             else

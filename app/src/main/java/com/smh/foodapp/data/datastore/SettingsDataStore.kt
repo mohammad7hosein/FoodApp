@@ -38,11 +38,8 @@ class SettingsDataStore @Inject constructor(
 
     private object preferenceKeys {
         val selectedMealType = stringPreferencesKey(PREFERENCES_MEAL_TYPE)
-        val selectedMealTypeId = intPreferencesKey(PREFERENCES_MEAL_TYPE_ID)
         val selectedDietType = stringPreferencesKey(PREFERENCES_DIET_TYPE)
-        val selectedDietTypeId = intPreferencesKey(PREFERENCES_DIET_TYPE_ID)
         val selectedCuisineType = stringPreferencesKey(PREFERENCES_CUISINE_TYPE)
-        val selectedCuisineTypeId = intPreferencesKey(PREFERENCES_CUISINE_TYPE_ID)
         val selectedTheme = booleanPreferencesKey(PREFERENCES_DARK_THEME)
     }
 
@@ -73,11 +70,8 @@ class SettingsDataStore @Inject constructor(
     suspend fun saveFilterType(filterType: FilterType) {
         myDataStore.edit { preferences ->
             preferences[preferenceKeys.selectedMealType] = filterType.selectedMealType
-            preferences[preferenceKeys.selectedMealTypeId] = filterType.selectedMealTypeId
             preferences[preferenceKeys.selectedDietType] = filterType.selectedDietType
-            preferences[preferenceKeys.selectedDietTypeId] = filterType.selectedDietTypeId
             preferences[preferenceKeys.selectedCuisineType] = filterType.selectedCuisineType
-            preferences[preferenceKeys.selectedCuisineTypeId] = filterType.selectedCuisineTypeId
         }
     }
 
@@ -92,18 +86,12 @@ class SettingsDataStore @Inject constructor(
         }
         .map { preferences ->
             val selectedMealType = preferences[preferenceKeys.selectedMealType] ?: DEFAULT_MEAL_TYPE
-            val selectedMealTypeId = preferences[preferenceKeys.selectedMealTypeId] ?: 0
             val selectedDietType = preferences[preferenceKeys.selectedDietType] ?: DEFAULT_DIET_TYPE
-            val selectedDietTypeId = preferences[preferenceKeys.selectedDietTypeId] ?: 0
             val selectedCuisineType = preferences[preferenceKeys.selectedCuisineType] ?: DEFAULT_CUISINE_TYPE
-            val selectedCuisineTypeId = preferences[preferenceKeys.selectedCuisineTypeId] ?: 0
             FilterType(
                 selectedMealType,
-                selectedMealTypeId,
                 selectedDietType,
-                selectedDietTypeId,
-                selectedCuisineType,
-                selectedCuisineTypeId
+                selectedCuisineType
             )
         }
 

@@ -1,57 +1,77 @@
 package com.smh.foodapp.presentation.ui.component
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.border
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.presentation.theme.Accent
 
 @Composable
 fun BottomNavigationBar(
-    items: List<BottomNavItem>,
     navController: NavController,
-    onItemClick: (BottomNavItem) -> Unit
+    bottomBarState: MutableState<Boolean>
 ) {
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    BottomNavigation(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .border(width = 1.dp, shape = RoundedCornerShape(20.dp), color = Accent),
-        contentColor = Accent,
-        backgroundColor = Color.White,
-        elevation = 15.dp
-    ) {
-        items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
-            BottomNavigationItem(
-                selected = selected,
-                onClick = { onItemClick(item) },
-                selectedContentColor = Accent,
-                unselectedContentColor = Color.Gray,
-                icon = {
-                    Icon(
-                        painter = painterResource(id = if (selected) item.selectedIconId else item.unSelectedIconId),
-                        contentDescription = item.name
+    val items = listOf(
+        Screen.Favorite,
+        Screen.Dashboard,
+        Screen.FoodJoke
+    )
+    AnimatedVisibility(
+        visible = bottomBarState.value,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+        content = {
+            BottomNavigation(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clip(RoundedCornerShape(20.dp)),
+//            .border(width = 1.dp, shape = RoundedCornerShape(20.dp), color = Accent),
+                contentColor = Accent,
+                backgroundColor = Color.White,
+                elevation = 15.dp
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                items.forEach { item ->
+                    val selected = item.route == currentRoute
+                    BottomNavigationItem(
+                        selected = selected,
+                        onClick = {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        selectedContentColor = Accent,
+                        unselectedContentColor = Color.Gray,
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = if (selected) item.selectedIconId else item.unSelectedIconId),
+                                contentDescription = item.name
+                            )
+                        }
                     )
                 }
-            )
+            }
         }
-    }
+    )
 }
-
-data class BottomNavItem(
-    val name: String,
-    val route: String,
-    @DrawableRes val unSelectedIconId: Int,
-    @DrawableRes val selectedIconId: Int
-)

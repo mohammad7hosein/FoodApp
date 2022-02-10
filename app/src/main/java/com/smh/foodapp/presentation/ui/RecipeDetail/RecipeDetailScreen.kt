@@ -1,4 +1,4 @@
-package com.smh.foodapp.presentation.ui.FoodJoke
+package com.smh.foodapp.presentation.ui.RecipeDetail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 
 @Composable
-fun FoodJokeScreen(
+fun RecipeDetailScreen(
     isDarkTheme: Boolean,
     isNetworkAvailable: Boolean,
 ) {
@@ -19,7 +19,7 @@ fun FoodJokeScreen(
         isNetworkAvailable = isNetworkAvailable
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "FoodJoke", fontSize = 48.sp)
+            Text(text = "Detail", fontSize = 48.sp)
         }
     }
 }

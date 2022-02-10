@@ -2,18 +2,17 @@ package com.smh.foodapp.domain.model
 
 import com.smh.foodapp.domain.model.MealType.*
 
-
 enum class MealType(val value: String) {
-    MAIN_COURSE("main course"),
-    DESSERT("dessert"),
-    APPETIZER("appetizer"),
-    SALAD("salad"),
-    BREAD("bread"),
-    BREAKFAST("breakfast"),
-    SOUP("soup"),
-    DRINK("drink"),
-    BEVERAGE("beverage"),
-    SAUCE("sauce")
+    MAIN_COURSE("Main Course"),
+    DESSERT("Dessert"),
+    APPETIZER("Appetizer"),
+    SALAD("Salad"),
+    BREAD("Bread"),
+    BREAKFAST("Breakfast"),
+    SOUP("Soup"),
+    DRINK("Drink"),
+    BEVERAGE("Beverage"),
+    SAUCE("Sauce")
 }
 
 fun getAllMealType() : List<MealType> {
@@ -27,10 +26,3 @@ fun getMealType(value: String) : MealType? {
     return map[value]
 }
 
-enum class DietType(value: String) {
-
-}
-
-enum class CuisineType(value: String) {
-
-}

@@ -10,12 +10,9 @@ import com.smh.foodapp.util.Constants.Companion.DEFAULT_CUISINE_TYPE
 import com.smh.foodapp.util.Constants.Companion.DEFAULT_DIET_TYPE
 import com.smh.foodapp.util.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.smh.foodapp.util.Constants.Companion.PREFERENCES_CUISINE_TYPE
-import com.smh.foodapp.util.Constants.Companion.PREFERENCES_CUISINE_TYPE_ID
 import com.smh.foodapp.util.Constants.Companion.PREFERENCES_DARK_THEME
 import com.smh.foodapp.util.Constants.Companion.PREFERENCES_DIET_TYPE
-import com.smh.foodapp.util.Constants.Companion.PREFERENCES_DIET_TYPE_ID
 import com.smh.foodapp.util.Constants.Companion.PREFERENCES_MEAL_TYPE
-import com.smh.foodapp.util.Constants.Companion.PREFERENCES_MEAL_TYPE_ID
 import com.smh.foodapp.util.Constants.Companion.PREFERENCES_NAME
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

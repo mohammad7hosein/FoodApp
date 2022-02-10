@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.smh.foodapp.data.database.RecipeDao
 import com.smh.foodapp.data.api.RecipeService
 import com.smh.foodapp.data.datastore.SettingsDataStore
 import com.smh.foodapp.domain.model.DataState

@@ -35,11 +35,8 @@ class Constants {
         const val DEFAULT_DIET_TYPE = "gluten free"
         const val DEFAULT_CUISINE_TYPE = "spanish"
         const val PREFERENCES_MEAL_TYPE = "mealType"
-        const val PREFERENCES_MEAL_TYPE_ID = "mealTypeId"
         const val PREFERENCES_DIET_TYPE = "dietType"
-        const val PREFERENCES_DIET_TYPE_ID = "dietTypeId"
         const val PREFERENCES_CUISINE_TYPE = "cuisineType"
-        const val PREFERENCES_CUISINE_TYPE_ID = "cuisineTypeId"
         const val PREFERENCES_DARK_THEME = "dark_theme"
     }
 

@@ -8,7 +8,6 @@ import com.smh.foodapp.data.api.RecipeService
 import com.smh.foodapp.data.datastore.SettingsDataStore
 import com.smh.foodapp.domain.model.DataState
 import com.smh.foodapp.domain.model.FilterType
-import com.smh.foodapp.domain.model.Recipe
 import com.smh.foodapp.domain.network.ConnectivityManager
 import com.smh.foodapp.util.Constants.Companion.API_KEY
 import com.smh.foodapp.util.Constants.Companion.DEFAULT_CUISINE_TYPE
@@ -24,6 +23,7 @@ import com.smh.foodapp.util.Constants.Companion.QUERY_NUMBER
 import com.smh.foodapp.util.Constants.Companion.QUERY_SEARCH
 import com.smh.foodapp.util.Constants.Companion.QUERY_TYPE
 import com.smh.foodapp.util.DialogQueue
+import com.smh.foody.models.Recipe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -45,6 +45,9 @@ class RecipeListViewModel @Inject constructor(
 
     private val _state = mutableStateOf(RecipeListState())
     val state: State<RecipeListState> = _state
+
+    private val _showSplash = MutableStateFlow(true)
+    val showSplash = _showSplash.asStateFlow()
 
     private val _searchText = mutableStateOf(
         SearchBoxState(
@@ -80,7 +83,7 @@ class RecipeListViewModel @Inject constructor(
                             dataState.data?.let { data ->
                                 _state.value = state.value.copy(
                                     isLoading = false,
-                                    recipes = data
+                                    recipes = data.results
                                 )
                             }
                         }
@@ -91,11 +94,6 @@ class RecipeListViewModel @Inject constructor(
                         }
                     }
                 }.launchIn(viewModelScope)
-            }
-            is RecipeListEvent.ShowFilterDialog -> {
-                _state.value = state.value.copy(
-                    isShowFilterDialog = !state.value.isShowFilterDialog
-                )
             }
             is RecipeListEvent.EnteredText -> {
                 _searchText.value = searchText.value.copy(
@@ -110,24 +108,25 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun getRecipes(queries: Map<String, String>): Flow<DataState<List<Recipe>>> = flow {
+    private fun getRecipes(queries: Map<String, String>): Flow<DataState<Recipe>> = flow {
         emit(DataState.Loading())
         try {
             if (connectivityManager.isNetworkAvailable.value) {
                 val response = handleRecipeResponse(recipeService.getRecipes(queries))
                 emit(response)
-            } else
-                emit(DataState.Error("No Internet Connection"))
+            }
+            else
+                emit(DataState.Error("No Network Connection"))
         } catch (e: Exception) {
             emit(DataState.Error(e.message ?: "Unknown Error"))
         }
     }
 
-    private fun handleRecipeResponse(response: Response<List<Recipe>>): DataState<List<Recipe>> {
+    private fun handleRecipeResponse(response: Response<Recipe>): DataState<Recipe> {
         return when {
             response.message().toString().contains("timeout") -> DataState.Error("Timeout")
             response.code() == 402 -> DataState.Error("Api Key Limited")
-            response.body().isNullOrEmpty() -> DataState.Error("Recipes Not Found")
+            response.body()!!.results.isNullOrEmpty() -> DataState.Error("Recipes Not Found")
             response.isSuccessful -> DataState.Success(response.body()!!)
             else -> DataState.Error(response.message())
         }
@@ -137,6 +136,7 @@ class RecipeListViewModel @Inject constructor(
         getRecipes(applyQueries()).onEach { dataState ->
             when (dataState) {
                 is DataState.Loading -> {
+                    _showSplash.value = false
                     _state.value = state.value.copy(isLoading = true)
                 }
                 is DataState.Success -> {
@@ -144,7 +144,7 @@ class RecipeListViewModel @Inject constructor(
                         _state.value = state.value.copy(
                             isLoading = false,
                             filter = filterType,
-                            recipes = data
+                            recipes = data.results
                         )
                     }
                 }

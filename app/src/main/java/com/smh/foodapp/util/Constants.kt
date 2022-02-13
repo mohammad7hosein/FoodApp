@@ -8,7 +8,7 @@ class Constants {
 
         const val BASE_URL = "https://api.spoonacular.com"
         const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
-        const val API_KEY = "efde670be5db42d1a4fbced07620c5f7"
+        const val API_KEY = "d1a4e14e097a4380b6e3492125f3e473"
 
         const val RECIPE_RESULT_KEY = "recipeBundle"
 
@@ -31,9 +31,9 @@ class Constants {
         // DataStore
         const val PREFERENCES_NAME = "foody_preferences"
         const val DEFAULT_RECIPES_NUMBER = "50"
-        const val DEFAULT_MEAL_TYPE = "main course"
-        const val DEFAULT_DIET_TYPE = "gluten free"
-        const val DEFAULT_CUISINE_TYPE = "spanish"
+        const val DEFAULT_MEAL_TYPE = "Main Course"
+        const val DEFAULT_DIET_TYPE = "Gluten Free"
+        const val DEFAULT_CUISINE_TYPE = "Spanish"
         const val PREFERENCES_MEAL_TYPE = "mealType"
         const val PREFERENCES_DIET_TYPE = "dietType"
         const val PREFERENCES_CUISINE_TYPE = "cuisineType"

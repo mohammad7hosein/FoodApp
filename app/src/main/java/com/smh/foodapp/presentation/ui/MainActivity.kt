@@ -3,10 +3,17 @@ package com.smh.foodapp.presentation.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,10 +24,12 @@ import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foodapp.presentation.ui.FoodJoke.FoodJokeScreen
 import com.smh.foodapp.presentation.ui.RecipeDetail.RecipeDetailScreen
 import com.smh.foodapp.presentation.ui.RecipeList.RecipeListScreen
+import com.smh.foodapp.presentation.ui.RecipeList.RecipeListViewModel
 import com.smh.foodapp.presentation.ui.component.BottomNavigationBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalComposeUiApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -38,8 +47,15 @@ class MainActivity : ComponentActivity() {
         connectivityManager.unregisterConnectionObserver(this)
     }
 
+    private val viewModel: RecipeListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition{
+               viewModel.showSplash.value
+            }
+        }
         setContent {
             FoodAppTheme(
                 darkTheme = false,
@@ -50,6 +66,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     bottomBar = {
                         BottomNavigationBar(
+                            isDarkTheme = settingsDataStore.isDark.value,
                             navController = navController,
                             bottomBarState = bottomBarState
                         )
@@ -64,7 +81,9 @@ class MainActivity : ComponentActivity() {
                                 RecipeListScreen(
                                     isDarkTheme = settingsDataStore.isDark.value,
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
-                                    navController = navController
+                                    onToggleTheme = settingsDataStore::toggleTheme,
+                                    navController = navController,
+                                    viewModel = viewModel
                                 )
                             }
                             composable(Screen.Favorite.route) {

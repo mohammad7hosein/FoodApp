@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.smh.foodapp.presentation.theme.White
 import java.util.*
 
 @Composable
@@ -22,17 +24,27 @@ fun GenericDialog(
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        title = { Text(title) },
+        title = {
+            Text(
+                text = title,
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.body1
+            )
+        },
         text = {
             if (description != null) {
-                Text(text = description)
+                Text(
+                    text = description,
+                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.subtitle2
+                )
             }
         },
         buttons = {
             Row(
                 modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(8.dp),
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 if (negativeAction != null) {
@@ -41,7 +53,11 @@ fun GenericDialog(
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onError),
                         onClick = negativeAction.onNegativeAction
                     ) {
-                        Text(text = negativeAction.negativeBtnTxt)
+                        Text(
+                            text = negativeAction.negativeBtnTxt,
+                            color = White,
+                            style = MaterialTheme.typography.subtitle2
+                        )
                     }
                 }
                 if (positiveAction != null) {
@@ -49,7 +65,11 @@ fun GenericDialog(
                         modifier = Modifier.padding(end = 8.dp),
                         onClick = positiveAction.onPositiveAction,
                     ) {
-                        Text(text = positiveAction.positiveBtnTxt)
+                        Text(
+                            text = positiveAction.positiveBtnTxt,
+                            color = White,
+                            style = MaterialTheme.typography.subtitle2
+                        )
                     }
                 }
             }

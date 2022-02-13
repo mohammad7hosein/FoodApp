@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -20,10 +21,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.smh.foodapp.domain.model.Screen
-import com.smh.foodapp.presentation.theme.Accent
+import com.smh.foodapp.presentation.theme.*
 
 @Composable
 fun BottomNavigationBar(
+    isDarkTheme: Boolean,
     navController: NavController,
     bottomBarState: MutableState<Boolean>
 ) {
@@ -39,12 +41,10 @@ fun BottomNavigationBar(
         content = {
             BottomNavigation(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .clip(RoundedCornerShape(20.dp)),
-//            .border(width = 1.dp, shape = RoundedCornerShape(20.dp), color = Accent),
-                contentColor = Accent,
-                backgroundColor = Color.White,
-                elevation = 15.dp
+//                    .padding(16.dp)
+                    .clip(RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)),
+                backgroundColor = if (isDarkTheme) DarkGray else White,
+                elevation = 45.dp
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
@@ -61,8 +61,8 @@ fun BottomNavigationBar(
                                 restoreState = true
                             }
                         },
-                        selectedContentColor = Accent,
-                        unselectedContentColor = Color.Gray,
+                        selectedContentColor = if (isDarkTheme) Primary else Accent,
+                        unselectedContentColor = if (isDarkTheme) LightGray else Gray,
                         icon = {
                             Icon(
                                 painter = painterResource(id = if (selected) item.selectedIconId else item.unSelectedIconId),

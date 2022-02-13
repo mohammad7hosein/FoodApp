@@ -3,8 +3,8 @@ package com.smh.foodapp.domain.model
 import com.smh.foodapp.domain.model.CuisineType.*
 
 enum class CuisineType(val value: String) {
-    ITALIAN("Italian"),
     SPANISH("Spanish"),
+    ITALIAN("Italian"),
     FRENCH("French"),
     BRITISH("British"),
     INDIAN("Indian"),
@@ -17,7 +17,7 @@ enum class CuisineType(val value: String) {
 
 fun getAllCuisineType() : List<CuisineType> {
     return listOf(
-        ITALIAN, SPANISH, FRENCH, BRITISH, INDIAN, KOREAN, CHINESE, AFRICAN, AMERICAN, MEXICAN
+        SPANISH, ITALIAN, FRENCH, BRITISH, INDIAN, KOREAN, CHINESE, AFRICAN, AMERICAN, MEXICAN
     )
 }
 

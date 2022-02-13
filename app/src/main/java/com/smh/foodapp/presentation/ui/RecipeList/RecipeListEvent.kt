@@ -8,5 +8,4 @@ sealed class RecipeListEvent {
     data class ChangeTextFocus(val focusState: FocusState) : RecipeListEvent()
     data class Filter(val filterType: FilterType) : RecipeListEvent()
     data class Search(val query: String) : RecipeListEvent()
-    object ShowFilterDialog : RecipeListEvent()
 }

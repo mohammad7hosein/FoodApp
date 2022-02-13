@@ -3,7 +3,8 @@ package com.smh.foodapp.data.database
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.smh.foodapp.domain.model.Recipe
+import com.smh.foody.models.Recipe
+import com.smh.foody.models.Result
 
 class RecipeTypeConverter {
 
@@ -19,4 +20,16 @@ class RecipeTypeConverter {
         val listType = object : TypeToken<Recipe>() {}.type
         return gson.fromJson(data, listType)
     }
+
+    @TypeConverter
+    fun resultToString(result: Result): String {
+        return gson.toJson(result)
+    }
+
+    @TypeConverter
+    fun stringToResult(data: String): Result {
+        val listType = object : TypeToken<Result>() {}.type
+        return gson.fromJson(data, listType)
+    }
+
 }

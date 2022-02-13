@@ -16,24 +16,41 @@ val viga = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    body1 = TextStyle(
+    h3 = TextStyle(
+        fontFamily = viga,
+        fontWeight = FontWeight.Normal,
+        fontSize = 48.sp
+    ),
+    h5 = TextStyle(
+        fontFamily = viga,
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp
+    ),
+    h6 = TextStyle(
+        fontFamily = viga,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp
+    ),
+    subtitle1 = TextStyle(
         fontFamily = viga,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = viga,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    body1 = TextStyle(
+        fontFamily = viga,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
     ),
     body2 = TextStyle(
         fontFamily = viga,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
-    ),
-    h3 = TextStyle(
-        fontFamily = viga,
-        fontWeight = FontWeight.Normal,
-        fontSize = 48.sp
     )
-
-
-
 
 
     /* Other default text styles to override

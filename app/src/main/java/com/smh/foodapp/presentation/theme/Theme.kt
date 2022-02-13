@@ -10,7 +10,6 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.smh.foodapp.presentation.ui.component.ConnectivityMonitor
 import com.smh.foodapp.presentation.ui.component.GenericDialogInfo
@@ -18,27 +17,21 @@ import com.smh.foodapp.presentation.ui.component.ProcessDialogQueue
 import java.util.*
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200,
+    primary = Primary,
     background = Dark,
-
-    )
+    onBackground = White,
+    surface = DarkGray,
+    onSurface = LightGray,
+    onPrimary = Primary,
+)
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200,
-    background = Color.White,
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primary = Accent,
+    background = LightGray,
+    onBackground = Dark,
+    surface = White,
+    onSurface = Gray,
+    onPrimary = Accent,
 )
 
 @Composable
@@ -66,7 +59,7 @@ fun FoodAppTheme(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = if (!darkTheme) LightGray else Color.Black)
+                .background(color = MaterialTheme.colors.background)
         ) {
             Column {
                 ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)

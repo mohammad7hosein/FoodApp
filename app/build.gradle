@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
-    implementation "com.squareup.leakcanary:leakcanary-android:2.5"
+//    implementation "com.squareup.leakcanary:leakcanary-android:2.5"
 
     // coil
     implementation "io.coil-kt:coil-compose:1.4.0"
@@ -111,5 +111,10 @@ dependencies {
 
     // statusBar and navigationBar controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.13.1'
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 
 }

@@ -3,20 +3,22 @@ package com.smh.foodapp.presentation.ui.RecipeList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -27,51 +29,74 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.smh.foodapp.R
-import com.smh.foodapp.domain.model.Screen
-import com.smh.foodapp.presentation.theme.DarkGray
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foodapp.presentation.theme.viga
+import com.smh.foodapp.presentation.ui.component.AnimatedShimmer
+import com.smh.foodapp.presentation.ui.component.FilterDialog
+import com.smh.foodapp.presentation.ui.component.RecipeItem
 
+@ExperimentalComposeUiApi
 @Composable
 fun RecipeListScreen(
     isDarkTheme: Boolean,
     isNetworkAvailable: Boolean,
+    onToggleTheme: () -> Unit,
     navController: NavHostController,
-    viewModel: RecipeListViewModel = hiltViewModel()
+    viewModel: RecipeListViewModel
 ) {
+    val searchText = viewModel.searchText.value
+    val state = viewModel.state.value
+    val dialogQueue = viewModel.dialogQueue
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val isDialogOpen = remember {
+        mutableStateOf(false)
+    }
+
     FoodAppTheme(
         darkTheme = isDarkTheme,
-        isNetworkAvailable = isNetworkAvailable
+        isNetworkAvailable = isNetworkAvailable,
+        dialogQueue = dialogQueue.queue.value
     ) {
-        val searchText = viewModel.searchText.value
-        val state = viewModel.state.value
-        val dialogQueue = viewModel.dialogQueue
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier.align(Alignment.CenterStart)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = "back",
-                        modifier = Modifier.size(36.dp)
-                    )
-                }
+//                IconButton(
+//                    onClick = { navController.navigateUp() },
+//                    modifier = Modifier.align(Alignment.CenterStart)
+//                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_back),
+//                        contentDescription = "back",
+//                        tint = MaterialTheme.colors.onBackground,
+//                        modifier = Modifier.size(36.dp)
+//                    )
+//                }
                 Text(
                     text = "Foody",
                     style = MaterialTheme.typography.h3,
-                    color = Color.Black,
+                    color = MaterialTheme.colors.onBackground,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.Center)
                 )
+                IconButton(
+                    onClick = { onToggleTheme() },
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Icon(
+                        painter = painterResource(id = if (isDarkTheme) R.drawable.ic_sun else R.drawable.ic_night),
+                        contentDescription = "day_night",
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -89,16 +114,17 @@ fun RecipeListScreen(
                         .height(45.dp)
                         .weight(1f)
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .background(color = Color.White)
+                        .background(color = MaterialTheme.colors.surface)
                         .padding(8.dp)
                 ) {
                     IconButton(onClick = {
                         viewModel.onEvent(RecipeListEvent.Search(searchText.text))
+                        keyboardController?.hide()
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_search),
                             contentDescription = "search",
-                            tint = DarkGray
+                            tint = MaterialTheme.colors.onSurface
                         )
                     }
                     BasicTextField(
@@ -107,7 +133,7 @@ fun RecipeListScreen(
                             viewModel.onEvent(RecipeListEvent.EnteredText(it))
                         },
                         textStyle = TextStyle(
-                            color = DarkGray,
+                            color = MaterialTheme.colors.onSurface,
                             fontFamily = viga,
                             fontSize = 14.sp
                         ),
@@ -118,6 +144,7 @@ fun RecipeListScreen(
                         keyboardActions = KeyboardActions(
                             onSearch = {
                                 viewModel.onEvent(RecipeListEvent.Search(searchText.text))
+                                keyboardController?.hide()
                             }
                         ),
                         singleLine = true,
@@ -131,7 +158,7 @@ fun RecipeListScreen(
                         Text(
                             text = searchText.hint,
                             style = TextStyle(
-                                color = DarkGray,
+                                color = MaterialTheme.colors.onSurface,
                                 fontFamily = viga,
                                 fontSize = 14.sp
                             )
@@ -144,17 +171,74 @@ fun RecipeListScreen(
                         .height(45.dp)
                         .width(45.dp)
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .background(color = Color.White)
-                        .clickable {
-                            navController.navigate(Screen.Detail.route)
-                        }
-
+                        .background(color = MaterialTheme.colors.surface)
+                        .clickable { isDialogOpen.value = true }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_filter),
                         contentDescription = "filter",
-                        tint = DarkGray
+                        tint = MaterialTheme.colors.onSurface
                     )
+                }
+            }
+            FilterDialog(
+                selectedMealType = state.filter.selectedMealType,
+                selectedDietType = state.filter.selectedDietType,
+                selectedCuisineType = state.filter.selectedCuisineType,
+                isDialogOpen = isDialogOpen,
+                onFilterTypeChange = { filterType ->
+                    filterType?.let {
+                        viewModel.onEvent(RecipeListEvent.Filter(it))
+                    }
+                }
+            )
+            if (state.isLoading) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    repeat(4) {
+                        AnimatedShimmer()
+                    }
+                }
+            }
+//            else if (state.recipes.isEmpty() && !state.isLoading) {
+//                Box(
+//                    modifier = Modifier.fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Button(onClick = {
+//                        viewModel.onEvent(
+//                            RecipeListEvent.Filter(
+//                                state.filter
+//                            )
+//                        )
+//                    }) {
+//                        Text(
+//                            text = "Try Again",
+//                            color = MaterialTheme.colors.onBackground
+//                        )
+//                    }
+//                }
+//            }
+            else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    items(state.recipes) { recipe ->
+                        RecipeItem(
+                            isDarkTheme = isDarkTheme,
+                            image = recipe.image,
+                            title = recipe.title,
+                            summary = recipe.summary,
+                            likes = recipe.aggregateLikes,
+                            minutes = recipe.readyInMinutes,
+                            isVegan = recipe.vegan,
+                            onClick = {
+
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }

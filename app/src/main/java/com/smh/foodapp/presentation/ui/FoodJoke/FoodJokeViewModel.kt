@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.smh.foodapp.data.api.RecipeService
 import com.smh.foodapp.domain.model.DataState
 import com.smh.foodapp.domain.model.FoodJoke
+import com.smh.foodapp.domain.network.ConnectivityManager
 import com.smh.foodapp.util.Constants.Companion.API_KEY
 import com.smh.foodapp.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,12 +16,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import retrofit2.Response
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class FoodJokeViewModel @Inject constructor(
-    private val recipeService: RecipeService
+    private val recipeService: RecipeService,
+    private val connectivityManager: ConnectivityManager
 ) : ViewModel() {
 
     val dialogQueue = DialogQueue()
@@ -32,9 +33,9 @@ class FoodJokeViewModel @Inject constructor(
         showFoodJoke()
     }
 
-    fun showFoodJoke() {
+    private fun showFoodJoke() {
         getFoodJoke().onEach { dataState ->
-            when(dataState) {
+            when (dataState) {
                 is DataState.Success -> {
                     dataState.data?.let {
                         _state.value = state.value.copy(
@@ -52,16 +53,16 @@ class FoodJokeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-     private fun getFoodJoke(): Flow<DataState<FoodJoke>> = flow {
+    private fun getFoodJoke(): Flow<DataState<FoodJoke>> = flow {
         emit(DataState.Loading())
         try {
-            val response = handleFoodJokeResponse(recipeService.getFoodJoke(API_KEY))
-            emit(response)
+            if (connectivityManager.isNetworkAvailable.value) {
+                val response = handleFoodJokeResponse(recipeService.getFoodJoke(API_KEY))
+                emit(response)
+            } else
+                emit(DataState.Error("No Network Connection"))
         } catch (e: Exception) {
-//            if (!connectivityManager.isNetworkAvailable.value)
-//                emit(DataState.Error("No Network Connection"))
-
-                emit(DataState.Error(e.message ?: "Unknown Error"))
+            emit(DataState.Error(e.message ?: "Unknown Error"))
         }
     }
 

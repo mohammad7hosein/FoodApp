@@ -24,18 +24,11 @@ class Constants {
 
         // Room Database
         const val DATABASE_NAME = "recipes_db"
-        const val RECIPES_TABLE = "recipes_table"
         const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
 
         // DataStore
         const val PREFERENCES_NAME = "foody_preferences"
         const val DEFAULT_RECIPES_NUMBER = "50"
-        const val DEFAULT_MEAL_TYPE = "Main Course"
-        const val DEFAULT_DIET_TYPE = "Gluten Free"
-        const val DEFAULT_CUISINE_TYPE = "Spanish"
-        const val PREFERENCES_MEAL_TYPE = "mealType"
-        const val PREFERENCES_DIET_TYPE = "dietType"
-        const val PREFERENCES_CUISINE_TYPE = "cuisineType"
         const val PREFERENCES_DARK_THEME = "dark_theme"
 
         // RecipeListViewModel

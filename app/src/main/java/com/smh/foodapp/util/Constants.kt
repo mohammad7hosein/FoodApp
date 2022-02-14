@@ -26,7 +26,6 @@ class Constants {
         const val DATABASE_NAME = "recipes_db"
         const val RECIPES_TABLE = "recipes_table"
         const val FAVORITE_RECIPES_TABLE = "favorite_recipes_table"
-        const val FOOD_JOKE_TABLE = "food_joke_table"
 
         // DataStore
         const val PREFERENCES_NAME = "foody_preferences"
@@ -38,6 +37,11 @@ class Constants {
         const val PREFERENCES_DIET_TYPE = "dietType"
         const val PREFERENCES_CUISINE_TYPE = "cuisineType"
         const val PREFERENCES_DARK_THEME = "dark_theme"
+
+        // RecipeListViewModel
+        const val STATE_KEY_SELECTED_Meal = "selected_meal"
+        const val STATE_KEY_SELECTED_Diet = "selected_diet"
+        const val STATE_KEY_SELECTED_Cuisine = "selected_cuisine"
     }
 
 }

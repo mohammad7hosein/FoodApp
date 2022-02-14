@@ -1,13 +1,14 @@
 package com.smh.foodapp.presentation.ui.RecipeList
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smh.foodapp.data.api.RecipeService
 import com.smh.foodapp.data.datastore.SettingsDataStore
-import com.smh.foodapp.domain.model.DataState
-import com.smh.foodapp.domain.model.FilterType
+import com.smh.foodapp.domain.model.*
 import com.smh.foodapp.domain.network.ConnectivityManager
 import com.smh.foodapp.util.Constants.Companion.API_KEY
 import com.smh.foodapp.util.Constants.Companion.DEFAULT_CUISINE_TYPE
@@ -22,20 +23,24 @@ import com.smh.foodapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.smh.foodapp.util.Constants.Companion.QUERY_NUMBER
 import com.smh.foodapp.util.Constants.Companion.QUERY_SEARCH
 import com.smh.foodapp.util.Constants.Companion.QUERY_TYPE
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Cuisine
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Diet
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Meal
 import com.smh.foodapp.util.DialogQueue
 import com.smh.foody.models.Recipe
+import com.smh.foody.models.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val recipeService: RecipeService,
     private val connectivityManager: ConnectivityManager,
-    private val dataStore: SettingsDataStore
+    private val dataStore: SettingsDataStore,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private var mealType = DEFAULT_MEAL_TYPE
@@ -43,11 +48,15 @@ class RecipeListViewModel @Inject constructor(
     private var cuisineType = DEFAULT_CUISINE_TYPE
     private val filterType = dataStore.readFilterType
 
-    private val _state = mutableStateOf(RecipeListState())
-    val state: State<RecipeListState> = _state
+    val selectedMealType: MutableState<MealType> = mutableStateOf(MealType.MAIN_COURSE)
+    val selectedDietType: MutableState<DietType> = mutableStateOf(DietType.GLUTEN_FREE)
+    val selectedCuisineType: MutableState<CuisineType> = mutableStateOf(CuisineType.SPANISH)
 
-    private val _showSplash = MutableStateFlow(true)
-    val showSplash = _showSplash.asStateFlow()
+    val recipes: MutableState<List<Result>> = mutableStateOf(ArrayList())
+    val isLoading = mutableStateOf(false)
+    val dialogQueue = DialogQueue()
+
+    val showSplash = MutableStateFlow(true)
 
     private val _searchText = mutableStateOf(
         SearchBoxState(
@@ -56,44 +65,43 @@ class RecipeListViewModel @Inject constructor(
     )
     val searchText: State<SearchBoxState> = _searchText
 
-    val dialogQueue = DialogQueue()
-
     init {
+        savedStateHandle.get<MealType>(STATE_KEY_SELECTED_Meal)?.let { c ->
+            setSelectedMealType(c)
+        }
+        savedStateHandle.get<DietType>(STATE_KEY_SELECTED_Diet)?.let { c ->
+            setSelectedDietType(c)
+        }
+        savedStateHandle.get<CuisineType>(STATE_KEY_SELECTED_Cuisine)?.let { c ->
+            setSelectedCuisineType(c)
+        }
         viewModelScope.launch {
             filterType.collect { value ->
-                _state.value = state.value.copy(filter = value)
-                showRecipes(value)
+                mealType = value.selectedMealType
+                dietType = value.selectedDietType
+                cuisineType = value.selectedCuisineType
+                setSelectedMealType(getMealType(value.selectedMealType))
+                setSelectedDietType(getDietType(value.selectedDietType))
+                setSelectedCuisineType(getCuisineType(value.selectedCuisineType))
             }
         }
+        showRecipes(applyQueries())
     }
 
     fun onEvent(event: RecipeListEvent) {
         when (event) {
             is RecipeListEvent.Filter -> {
-                saveFilterType(event.filterType)
-                showRecipes(event.filterType)
+                saveFilterType(
+                    FilterType(
+                        selectedMealType.value.text,
+                        selectedDietType.value.text,
+                        selectedCuisineType.value.text
+                    )
+                )
+                showRecipes(applyQueries())
             }
             is RecipeListEvent.Search -> {
-                getRecipes(applySearchQuery(event.query)).onEach { dataState ->
-                    when (dataState) {
-                        is DataState.Loading -> {
-                            _state.value = state.value.copy(isLoading = true)
-                        }
-                        is DataState.Success -> {
-                            dataState.data?.let { data ->
-                                _state.value = state.value.copy(
-                                    isLoading = false,
-                                    recipes = data.results
-                                )
-                            }
-                        }
-                        is DataState.Error -> {
-                            dataState.message?.let { error ->
-                                dialogQueue.appendErrorMessage("Error", error)
-                            }
-                        }
-                    }
-                }.launchIn(viewModelScope)
+                showRecipes(applySearchQuery(event.query))
             }
             is RecipeListEvent.EnteredText -> {
                 _searchText.value = searchText.value.copy(
@@ -114,8 +122,7 @@ class RecipeListViewModel @Inject constructor(
             if (connectivityManager.isNetworkAvailable.value) {
                 val response = handleRecipeResponse(recipeService.getRecipes(queries))
                 emit(response)
-            }
-            else
+            } else
                 emit(DataState.Error("No Network Connection"))
         } catch (e: Exception) {
             emit(DataState.Error(e.message ?: "Unknown Error"))
@@ -132,23 +139,21 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun showRecipes(filterType: FilterType) {
-        getRecipes(applyQueries()).onEach { dataState ->
+    private fun showRecipes(queries: Map<String, String>) {
+        getRecipes(queries).onEach { dataState ->
             when (dataState) {
                 is DataState.Loading -> {
-                    _showSplash.value = false
-                    _state.value = state.value.copy(isLoading = true)
+                    isLoading.value = true
+                    showSplash.value = false
                 }
                 is DataState.Success -> {
                     dataState.data?.let { data ->
-                        _state.value = state.value.copy(
-                            isLoading = false,
-                            filter = filterType,
-                            recipes = data.results
-                        )
+                        isLoading.value = false
+                        recipes.value = data.results
                     }
                 }
                 is DataState.Error -> {
+                    isLoading.value = false
                     dataState.message?.let { error ->
                         dialogQueue.appendErrorMessage("Error", error)
                     }
@@ -165,20 +170,11 @@ class RecipeListViewModel @Inject constructor(
 
     private fun applyQueries(): HashMap<String, String> {
         val queries = HashMap<String, String>()
-
-        viewModelScope.launch {
-            filterType.collect { value ->
-                mealType = value.selectedMealType
-                dietType = value.selectedDietType
-                cuisineType = value.selectedCuisineType
-            }
-        }
-
         queries[QUERY_NUMBER] = DEFAULT_RECIPES_NUMBER
         queries[QUERY_API_KEY] = API_KEY
-        queries[QUERY_TYPE] = mealType
-        queries[QUERY_DIET] = dietType
-        queries[QUERY_CUISINE] = cuisineType
+        queries[QUERY_TYPE] = selectedMealType.value.text
+        queries[QUERY_DIET] = selectedDietType.value.text
+        queries[QUERY_CUISINE] = selectedCuisineType.value.text
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
         return queries
@@ -192,6 +188,36 @@ class RecipeListViewModel @Inject constructor(
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
         return queries
+    }
+
+    fun onSelectedMealTypeChanged(meal: String) {
+        val newMealType = getMealType(meal)
+        setSelectedMealType(newMealType)
+    }
+
+    private fun setSelectedMealType(mealType: MealType) {
+        selectedMealType.value = mealType
+        savedStateHandle.set(STATE_KEY_SELECTED_Meal, mealType)
+    }
+
+    fun onSelectedDietTypeChanged(diet: String) {
+        val newDietType = getDietType(diet)
+        setSelectedDietType(newDietType)
+    }
+
+    private fun setSelectedDietType(dietType: DietType) {
+        selectedDietType.value = dietType
+        savedStateHandle.set(STATE_KEY_SELECTED_Diet, dietType)
+    }
+
+    fun onSelectedCuisineTypeChanged(meal: String) {
+        val newCuisineType = getCuisineType(meal)
+        setSelectedCuisineType(newCuisineType)
+    }
+
+    private fun setSelectedCuisineType(cuisineType: CuisineType) {
+        selectedCuisineType.value = cuisineType
+        savedStateHandle.set(STATE_KEY_SELECTED_Cuisine, cuisineType)
     }
 
 }

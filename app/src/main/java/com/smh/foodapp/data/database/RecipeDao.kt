@@ -2,7 +2,6 @@ package com.smh.foodapp.data.database
 
 import androidx.room.*
 import com.smh.foodapp.data.database.entity.FavoriteEntity
-import com.smh.foodapp.data.database.entity.RecipeEntity
 
 @Dao
 interface RecipeDao {
@@ -18,11 +17,5 @@ interface RecipeDao {
 
     @Query("DELETE FROM favorite_recipes_table")
     suspend fun deleteAllFavoriteRecipes()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecipe(recipesEntity: RecipeEntity)
-
-    @Query("SELECT * FROM recipes_table")
-    suspend fun getRecipes(): List<RecipeEntity>
 
 }

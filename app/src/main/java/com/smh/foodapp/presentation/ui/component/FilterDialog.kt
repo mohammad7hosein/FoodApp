@@ -10,29 +10,24 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.smh.foodapp.domain.model.FilterType
-import com.smh.foodapp.domain.model.getALLDietType
-import com.smh.foodapp.domain.model.getAllCuisineType
-import com.smh.foodapp.domain.model.getAllMealType
+import com.smh.foodapp.domain.model.*
 
 @Composable
 fun FilterDialog(
-    selectedMealType: String,
-    selectedDietType: String,
-    selectedCuisineType: String,
-    onFilterTypeChange: (FilterType?) -> Unit,
+    selectedMealType: MealType,
+    selectedDietType: DietType,
+    selectedCuisineType: CuisineType,
+    onSelectedMealTypeChanged: (String) -> Unit,
+    onSelectedDietTypeChanged: (String) -> Unit,
+    onSelectedCuisineTypeChanged: (String) -> Unit,
+    onFilterTypeChanged: () -> Unit,
     isDialogOpen: MutableState<Boolean>
 ) {
-    val filterType: MutableState<FilterType?> = remember {
-        mutableStateOf(null)
-    }
 
     if (isDialogOpen.value) {
         Dialog(
@@ -68,10 +63,10 @@ fun FilterDialog(
                             }
                             items(getAllMealType()) { item ->
                                 FilterDialogItem(
-                                    filterType = item.value,
-                                    isSelected = selectedMealType == item.value,
+                                    filterType = item.text,
+                                    isSelected = selectedMealType == item,
                                     onSelectedFilterTypeChanged = {
-                                        filterType.value?.copy(selectedMealType = it)
+                                        onSelectedMealTypeChanged(it)
                                     }
                                 )
                             }
@@ -88,10 +83,10 @@ fun FilterDialog(
                             }
                             items(getALLDietType()) { item ->
                                 FilterDialogItem(
-                                    filterType = item.value,
-                                    isSelected = selectedDietType == item.value,
+                                    filterType = item.text,
+                                    isSelected = selectedDietType == item,
                                     onSelectedFilterTypeChanged = {
-                                        filterType.value?.copy(selectedDietType = it)
+                                        onSelectedDietTypeChanged(it)
                                     }
                                 )
                             }
@@ -108,10 +103,10 @@ fun FilterDialog(
                             }
                             items(getAllCuisineType()) { item ->
                                 FilterDialogItem(
-                                    filterType = item.value,
-                                    isSelected = selectedCuisineType == item.value,
+                                    filterType = item.text,
+                                    isSelected = selectedCuisineType == item,
                                     onSelectedFilterTypeChanged = {
-                                        filterType.value?.copy(selectedCuisineType = it)
+                                        onSelectedCuisineTypeChanged(it)
                                     }
                                 )
                             }
@@ -126,7 +121,7 @@ fun FilterDialog(
                         ),
                         onClick = {
                             isDialogOpen.value = false
-                            onFilterTypeChange(filterType.value)
+                            onFilterTypeChanged()
                         }) {
                         Text(
                             text = "Apply",

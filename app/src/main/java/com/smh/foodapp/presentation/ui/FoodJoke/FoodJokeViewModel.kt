@@ -32,7 +32,7 @@ class FoodJokeViewModel @Inject constructor(
         showFoodJoke()
     }
 
-    private fun showFoodJoke() {
+    fun showFoodJoke() {
         getFoodJoke().onEach { dataState ->
             when(dataState) {
                 is DataState.Success -> {
@@ -47,11 +47,12 @@ class FoodJokeViewModel @Inject constructor(
                         dialogQueue.appendErrorMessage("Error", error)
                     }
                 }
+                else -> {}
             }
         }.launchIn(viewModelScope)
     }
 
-     fun getFoodJoke(): Flow<DataState<FoodJoke>> = flow {
+     private fun getFoodJoke(): Flow<DataState<FoodJoke>> = flow {
         emit(DataState.Loading())
         try {
             val response = handleFoodJokeResponse(recipeService.getFoodJoke(API_KEY))

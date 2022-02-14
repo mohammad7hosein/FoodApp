@@ -2,7 +2,7 @@ package com.smh.foodapp.domain.model
 
 import com.smh.foodapp.domain.model.DietType.*
 
-enum class DietType(val value: String) {
+enum class DietType(val text: String) {
     GLUTEN_FREE("Gluten Free"),
     KETOGENIC("Ketogenic"),
     VEGETARIAN("Vegetarian"),
@@ -21,8 +21,8 @@ fun getALLDietType() : List<DietType> {
     )
 }
 
-fun getDietType(value: String) : DietType? {
-    val map = values().associateBy(DietType::value)
-    return map[value]
+fun getDietType(value: String) : DietType {
+    val map = values().associateBy(DietType::text)
+    return map[value]!!
 }
 

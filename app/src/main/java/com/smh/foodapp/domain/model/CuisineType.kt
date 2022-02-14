@@ -2,7 +2,7 @@ package com.smh.foodapp.domain.model
 
 import com.smh.foodapp.domain.model.CuisineType.*
 
-enum class CuisineType(val value: String) {
+enum class CuisineType(val text: String) {
     SPANISH("Spanish"),
     ITALIAN("Italian"),
     FRENCH("French"),
@@ -21,7 +21,7 @@ fun getAllCuisineType() : List<CuisineType> {
     )
 }
 
-fun getCuisineType(value: String) : CuisineType? {
-    val map = CuisineType.values().associateBy(CuisineType::value)
-    return map[value]
+fun getCuisineType(value: String) : CuisineType {
+    val map = CuisineType.values().associateBy(CuisineType::text)
+    return map[value]!!
 }

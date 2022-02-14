@@ -2,7 +2,7 @@ package com.smh.foodapp.domain.model
 
 import com.smh.foodapp.domain.model.MealType.*
 
-enum class MealType(val value: String) {
+enum class MealType(val text: String) {
     MAIN_COURSE("Main Course"),
     DESSERT("Dessert"),
     APPETIZER("Appetizer"),
@@ -21,8 +21,8 @@ fun getAllMealType() : List<MealType> {
     )
 }
 
-fun getMealType(value: String) : MealType? {
-    val map = values().associateBy(MealType::value)
-    return map[value]
+fun getMealType(value: String) : MealType {
+    val map = values().associateBy(MealType::text)
+    return map[value]!!
 }
 

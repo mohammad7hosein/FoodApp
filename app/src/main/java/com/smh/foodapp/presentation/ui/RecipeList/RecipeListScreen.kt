@@ -45,9 +45,14 @@ fun RecipeListScreen(
     viewModel: RecipeListViewModel
 ) {
     val searchText = viewModel.searchText.value
-    val state = viewModel.state.value
+    val recipes = viewModel.recipes.value
+    val isLoading = viewModel.isLoading.value
     val dialogQueue = viewModel.dialogQueue
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val selectedMealType = viewModel.selectedMealType.value
+    val selectedDietType = viewModel.selectedDietType.value
+    val selectedCuisineType = viewModel.selectedCuisineType.value
 
     val isDialogOpen = remember {
         mutableStateOf(false)
@@ -182,49 +187,42 @@ fun RecipeListScreen(
                 }
             }
             FilterDialog(
-                selectedMealType = state.filter.selectedMealType,
-                selectedDietType = state.filter.selectedDietType,
-                selectedCuisineType = state.filter.selectedCuisineType,
+                selectedMealType = selectedMealType,
+                selectedDietType = selectedDietType,
+                selectedCuisineType = selectedCuisineType,
+                onSelectedMealTypeChanged = viewModel::onSelectedMealTypeChanged,
+                onSelectedDietTypeChanged = viewModel::onSelectedDietTypeChanged,
+                onSelectedCuisineTypeChanged = viewModel::onSelectedCuisineTypeChanged,
                 isDialogOpen = isDialogOpen,
-                onFilterTypeChange = { filterType ->
-                    filterType?.let {
-                        viewModel.onEvent(RecipeListEvent.Filter(it))
-                    }
+                onFilterTypeChanged = {
+                    viewModel.onEvent(
+                        RecipeListEvent.Filter
+                    )
                 }
             )
-            if (state.isLoading) {
+            if (isLoading) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     repeat(4) {
                         AnimatedShimmer()
                     }
                 }
-            }
-//            else if (state.recipes.isEmpty() && !state.isLoading) {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Button(onClick = {
-//                        viewModel.onEvent(
-//                            RecipeListEvent.Filter(
-//                                state.filter
-//                            )
-//                        )
-//                    }) {
-//                        Text(
-//                            text = "Try Again",
-//                            color = MaterialTheme.colors.onBackground
-//                        )
-//                    }
-//                }
-//            }
-            else {
+            } else if (recipes.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Recipes Not Found",
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
+            } else {
                 LazyColumn(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(bottom = 48.dp, top = 16.dp, start = 16.dp, end = 16.dp)
                         .fillMaxWidth()
                 ) {
-                    items(state.recipes) { recipe ->
+                    items(recipes) { recipe ->
                         RecipeItem(
                             isDarkTheme = isDarkTheme,
                             image = recipe.image,

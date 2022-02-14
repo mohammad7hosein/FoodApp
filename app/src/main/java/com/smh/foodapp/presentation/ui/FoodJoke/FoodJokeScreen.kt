@@ -7,7 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,19 +49,33 @@ fun FoodJokeScreen(
                 )
             }
             Box(
-                modifier = Modifier.fillMaxWidth()
-                    .background(
-                        shape = MaterialTheme.shapes.medium,
-                        color = MaterialTheme.colors.surface
-                    ),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 48.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = state.text,
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.onBackground,
-                    textAlign = TextAlign.Center,
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .shadow(
+                            elevation = 5.dp,
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .background(
+                            shape = MaterialTheme.shapes.medium,
+                            color = MaterialTheme.colors.surface
+                        )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(20.dp),
+                        text = state.text,
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onBackground,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }

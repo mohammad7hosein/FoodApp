@@ -23,7 +23,7 @@ fun FavoriteRecipeScreen(
     isNetworkAvailable: Boolean,
     viewModel: RecipeListViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+
 
     FoodAppTheme(
         darkTheme = isDarkTheme,
@@ -33,27 +33,27 @@ fun FavoriteRecipeScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                items(state.recipes) { recipe ->
-                    RecipeItem(
-                        isDarkTheme = isDarkTheme,
-                        image = recipe.image,
-                        title = recipe.title,
-                        summary = recipe.summary,
-                        likes = recipe.aggregateLikes,
-                        minutes = recipe.readyInMinutes,
-                        isVegan = recipe.vegan,
-                        onClick = {
-
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
+//            LazyColumn(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//                    .fillMaxWidth()
+//            ) {
+//                items(recipes) { recipe ->
+//                    RecipeItem(
+//                        isDarkTheme = isDarkTheme,
+//                        image = recipe.image,
+//                        title = recipe.title,
+//                        summary = recipe.summary,
+//                        likes = recipe.aggregateLikes,
+//                        minutes = recipe.readyInMinutes,
+//                        isVegan = recipe.vegan,
+//                        onClick = {
+//
+//                        }
+//                    )
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                }
+//            }
 
         }
     }

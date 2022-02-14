@@ -10,7 +10,7 @@ class Constants {
         const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
         const val API_KEY = "d1a4e14e097a4380b6e3492125f3e473"
 
-        const val RECIPE_RESULT_KEY = "recipeBundle"
+        const val RECIPE_KEY = "recipe"
 
         // Api Query Keys
         const val QUERY_SEARCH = "query"
@@ -32,9 +32,9 @@ class Constants {
         const val PREFERENCES_DARK_THEME = "dark_theme"
 
         // RecipeListViewModel
-        const val STATE_KEY_SELECTED_Meal = "selected_meal"
-        const val STATE_KEY_SELECTED_Diet = "selected_diet"
-        const val STATE_KEY_SELECTED_Cuisine = "selected_cuisine"
+        const val STATE_KEY_SELECTED_MEAL = "selected_meal"
+        const val STATE_KEY_SELECTED_DIET = "selected_diet"
+        const val STATE_KEY_SELECTED_CUISINE = "selected_cuisine"
     }
 
 }

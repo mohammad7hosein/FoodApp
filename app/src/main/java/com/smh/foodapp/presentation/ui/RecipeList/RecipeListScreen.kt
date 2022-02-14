@@ -29,11 +29,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.smh.foodapp.R
+import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foodapp.presentation.theme.viga
 import com.smh.foodapp.presentation.ui.component.AnimatedShimmer
 import com.smh.foodapp.presentation.ui.component.FilterDialog
 import com.smh.foodapp.presentation.ui.component.RecipeItem
+import com.smh.foodapp.util.Constants.Companion.RECIPE_KEY
 
 @ExperimentalComposeUiApi
 @Composable
@@ -73,17 +75,6 @@ fun RecipeListScreen(
                     .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-//                IconButton(
-//                    onClick = { navController.navigateUp() },
-//                    modifier = Modifier.align(Alignment.CenterStart)
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_back),
-//                        contentDescription = "back",
-//                        tint = MaterialTheme.colors.onBackground,
-//                        modifier = Modifier.size(36.dp)
-//                    )
-//                }
                 Text(
                     text = "Foody",
                     style = MaterialTheme.typography.h3,
@@ -232,7 +223,11 @@ fun RecipeListScreen(
                             minutes = recipe.readyInMinutes,
                             isVegan = recipe.vegan,
                             onClick = {
-
+                                navController.currentBackStackEntry?.arguments?.putParcelable(
+                                    RECIPE_KEY,
+                                    recipe
+                                )
+                                navController.navigate(Screen.Detail.route)
                             }
                         )
                         Spacer(modifier = Modifier.height(16.dp))

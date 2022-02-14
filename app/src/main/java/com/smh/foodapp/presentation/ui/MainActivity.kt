@@ -9,14 +9,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.smh.foodapp.data.datastore.SettingsDataStore
 import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.domain.network.ConnectivityManager
@@ -26,15 +23,19 @@ import com.smh.foodapp.presentation.ui.RecipeDetail.RecipeDetailScreen
 import com.smh.foodapp.presentation.ui.RecipeList.RecipeListScreen
 import com.smh.foodapp.presentation.ui.RecipeList.RecipeListViewModel
 import com.smh.foodapp.presentation.ui.component.BottomNavigationBar
+import com.smh.foodapp.util.Constants.Companion.RECIPE_KEY
+import com.smh.foody.models.Result
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager
+
     @Inject
     lateinit var settingsDataStore: SettingsDataStore
 
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         connectivityManager.registerConnectionObserver(this)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         connectivityManager.unregisterConnectionObserver(this)
@@ -52,8 +54,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
-            setKeepOnScreenCondition{
-               viewModel.showSplash.value
+            setKeepOnScreenCondition {
+                viewModel.showSplash.value
             }
         }
         setContent {
@@ -74,7 +76,7 @@ class MainActivity : ComponentActivity() {
                     content = {
                         NavHost(
                             navController = navController,
-                            startDestination = Screen.Dashboard.route
+                            startDestination = Screen.Detail.route
                         ) {
                             composable(Screen.Dashboard.route) {
                                 LaunchedEffect(Unit) { bottomBarState.value = true }
@@ -102,9 +104,15 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.Detail.route) {
                                 LaunchedEffect(Unit) { bottomBarState.value = false }
+                                var recipe =
+                                    navController.previousBackStackEntry?.arguments?.getParcelable<Result>(
+                                        RECIPE_KEY
+                                    )
                                 RecipeDetailScreen(
                                     isDarkTheme = settingsDataStore.isDark.value,
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+                                    navController = navController,
+                                    recipe = recipe
                                 )
                             }
                         }

@@ -19,9 +19,9 @@ import com.smh.foodapp.util.Constants.Companion.QUERY_FILL_INGREDIENTS
 import com.smh.foodapp.util.Constants.Companion.QUERY_NUMBER
 import com.smh.foodapp.util.Constants.Companion.QUERY_SEARCH
 import com.smh.foodapp.util.Constants.Companion.QUERY_TYPE
-import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Cuisine
-import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Diet
-import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_Meal
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_CUISINE
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_DIET
+import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_MEAL
 import com.smh.foodapp.util.DialogQueue
 import com.smh.foody.models.Recipe
 import com.smh.foody.models.Result
@@ -55,13 +55,13 @@ class RecipeListViewModel @Inject constructor(
     val searchText: State<SearchBoxState> = _searchText
 
     init {
-        savedStateHandle.get<MealType>(STATE_KEY_SELECTED_Meal)?.let { c ->
+        savedStateHandle.get<MealType>(STATE_KEY_SELECTED_MEAL)?.let { c ->
             setSelectedMealType(c)
         }
-        savedStateHandle.get<DietType>(STATE_KEY_SELECTED_Diet)?.let { c ->
+        savedStateHandle.get<DietType>(STATE_KEY_SELECTED_DIET)?.let { c ->
             setSelectedDietType(c)
         }
-        savedStateHandle.get<CuisineType>(STATE_KEY_SELECTED_Cuisine)?.let { c ->
+        savedStateHandle.get<CuisineType>(STATE_KEY_SELECTED_CUISINE)?.let { c ->
             setSelectedCuisineType(c)
         }
         showRecipes(applyQueries())
@@ -163,7 +163,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun setSelectedMealType(mealType: MealType) {
         selectedMealType.value = mealType
-        savedStateHandle.set(STATE_KEY_SELECTED_Meal, mealType)
+        savedStateHandle.set(STATE_KEY_SELECTED_MEAL, mealType)
     }
 
     fun onSelectedDietTypeChanged(diet: String) {
@@ -173,7 +173,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun setSelectedDietType(dietType: DietType) {
         selectedDietType.value = dietType
-        savedStateHandle.set(STATE_KEY_SELECTED_Diet, dietType)
+        savedStateHandle.set(STATE_KEY_SELECTED_DIET, dietType)
     }
 
     fun onSelectedCuisineTypeChanged(meal: String) {
@@ -183,7 +183,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun setSelectedCuisineType(cuisineType: CuisineType) {
         selectedCuisineType.value = cuisineType
-        savedStateHandle.set(STATE_KEY_SELECTED_Cuisine, cuisineType)
+        savedStateHandle.set(STATE_KEY_SELECTED_CUISINE, cuisineType)
     }
 
 }

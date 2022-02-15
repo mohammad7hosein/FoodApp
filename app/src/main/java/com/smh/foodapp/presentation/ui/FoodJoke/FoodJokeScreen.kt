@@ -11,10 +11,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.smh.foodapp.presentation.theme.FoodAppTheme
-import kotlinx.coroutines.flow.collect
+
 
 @Composable
 fun FoodJokeScreen(

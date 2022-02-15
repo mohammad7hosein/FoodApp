@@ -8,15 +8,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.smh.foodapp.R
-import com.smh.foodapp.domain.model.ExtendedIngredient
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foody.models.Result
 import kotlinx.coroutines.launch
+
 
 @ExperimentalPagerApi
 @Composable
@@ -47,7 +46,7 @@ fun RecipeDetailScreen(
 
 @Composable
 fun TopBar(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     Box(
         modifier = Modifier

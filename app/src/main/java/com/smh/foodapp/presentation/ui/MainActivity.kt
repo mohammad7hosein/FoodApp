@@ -10,11 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.smh.foodapp.data.datastore.SettingsDataStore
 import com.smh.foodapp.domain.model.Screen
@@ -104,23 +102,18 @@ class MainActivity : ComponentActivity() {
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                                 )
                             }
-                            composable(
-                                "${Screen.Detail.route}/{recipe}",
-                                arguments = listOf(
-                                    navArgument("recipe") {
-                                        type = NavType.ReferenceType
-                                    }
-                                )
-                            ) {
-                                val recipe = it.arguments?.getParcelable<Result>("recipe")
-                                LaunchedEffect(Unit) { bottomBarState.value = false }
-                                RecipeDetailScreen(
-                                    isDarkTheme = settingsDataStore.isDark.value,
-                                    isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
-                                    navController = navController,
-                                    recipe = recipe!!
-                                )
-                            }
+//                            val recipe = navController.previousBackStackEntry?.savedStateHandle?.get<Result>(RECIPE_KEY)
+//                            recipe?.let {
+//                                composable(Screen.Detail.route) {
+//                                    LaunchedEffect(Unit) { bottomBarState.value = false }
+//                                    RecipeDetailScreen(
+//                                        isDarkTheme = settingsDataStore.isDark.value,
+//                                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+//                                        navController = navController,
+//                                        recipe = recipe
+//                                    )
+//                                }
+//                            }
                         }
                     }
                 )

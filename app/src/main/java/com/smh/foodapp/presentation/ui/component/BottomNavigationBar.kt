@@ -41,7 +41,6 @@ fun BottomNavigationBar(
         content = {
             BottomNavigation(
                 modifier = Modifier
-//                    .padding(16.dp)
                     .clip(RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)),
                 backgroundColor = if (isDarkTheme) DarkGray else White,
                 elevation = 45.dp
@@ -53,7 +52,8 @@ fun BottomNavigationBar(
                     BottomNavigationItem(
                         selected = selected,
                         onClick = {
-                            navController.navigate(item.route) {
+                            navController.navigate(item.route)
+                            {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }

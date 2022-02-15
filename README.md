@@ -2,7 +2,7 @@
 
 Food Recipes App Developed With Jetpack Compose
 
-Features:
+# Features:
 
 Clean Architecture
 

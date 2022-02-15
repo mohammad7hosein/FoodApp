@@ -9,7 +9,7 @@ data class Result(
     val aggregateLikes: Int,
     val cheap: Boolean,
     val dairyFree: Boolean,
-    val extendedIngredients: @RawValue List<ExtendedIngredient>,
+//    val extendedIngredients: @RawValue List<ExtendedIngredient>,
     val glutenFree: Boolean,
     val id: Int,
     val image: String,

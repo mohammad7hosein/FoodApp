@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.smh.foodapp.data.datastore.SettingsDataStore
+import com.smh.foodapp.domain.model.Result
 import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.domain.network.ConnectivityManager
 import com.smh.foodapp.presentation.theme.FoodAppTheme
@@ -24,8 +25,8 @@ import com.smh.foodapp.presentation.ui.RecipeDetail.RecipeDetailScreen
 import com.smh.foodapp.presentation.ui.RecipeList.RecipeListScreen
 import com.smh.foodapp.presentation.ui.RecipeList.RecipeListViewModel
 import com.smh.foodapp.presentation.ui.component.BottomNavigationBar
+import com.smh.foodapp.util.Constants.Companion.RECIPE_KEY
 import com.smh.foodapp.util.RecipeType
-import com.smh.foodapp.domain.model.Result
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -104,15 +105,13 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable(
-                                "detail/{recipe}",
+                                "${Screen.Detail.route}/{$RECIPE_KEY}",
                                 arguments = listOf(
-                                    navArgument("recipe") {
-                                        type = RecipeType()
-                                    }
+                                    navArgument(RECIPE_KEY) { type = RecipeType() },
                                 )
                             ) {
                                 LaunchedEffect(Unit) { bottomBarState.value = false }
-                                val recipe = it.arguments?.getParcelable<Result>("recipe")
+                                val recipe = it.arguments?.getParcelable<Result>(RECIPE_KEY)
                                 recipe?.let { recipe ->
                                     RecipeDetailScreen(
                                         isDarkTheme = settingsDataStore.isDark.value,

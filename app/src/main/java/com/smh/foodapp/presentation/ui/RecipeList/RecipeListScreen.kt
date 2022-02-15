@@ -10,10 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.smh.foodapp.R
+import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foodapp.presentation.theme.viga
 import com.smh.foodapp.presentation.ui.component.AnimatedShimmer
@@ -74,7 +72,7 @@ fun RecipeListScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
+                    .padding(12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -96,7 +94,7 @@ fun RecipeListScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,10 +202,12 @@ fun RecipeListScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "Recipes Not Found",
-                        color = MaterialTheme.colors.onBackground
-                    )
+                    Button(onClick = { viewModel.onEvent(RecipeListEvent.Filter) }) {
+                        Text(
+                            text = "Try Again",
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
                 }
             } else {
                 LazyColumn(
@@ -226,7 +226,7 @@ fun RecipeListScreen(
                             isVegan = recipe.vegan,
                             onClick = {
                                 val json = Uri.encode(Gson().toJson(recipe))
-                                navController.navigate("detail/$json")
+                                navController.navigate("${Screen.Detail.route}/$json")
                             }
                         )
                         Spacer(modifier = Modifier.height(16.dp))

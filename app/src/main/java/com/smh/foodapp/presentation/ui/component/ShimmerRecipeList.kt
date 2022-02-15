@@ -54,13 +54,13 @@ fun ShimmerItem(brush: Brush) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(
                 modifier = Modifier
-                    .size(200.dp)
+                    .height(180.dp)
+                    .weight(1f)
                     .background(brush)
             )
             Column(
                 modifier = Modifier
-
-                    .size(200.dp)
+                    .height(180.dp)
                     .weight(1f)
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -83,7 +83,7 @@ fun ShimmerItem(brush: Brush) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp, bottom = 12.dp),
+                        .padding(top = 12.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Spacer(

@@ -11,6 +11,7 @@ class Constants {
         const val API_KEY = "d1a4e14e097a4380b6e3492125f3e473"
 
         const val RECIPE_KEY = "recipe"
+        const val INGREDIENT_KEY = "ingredient"
 
         // Api Query Keys
         const val QUERY_SEARCH = "query"

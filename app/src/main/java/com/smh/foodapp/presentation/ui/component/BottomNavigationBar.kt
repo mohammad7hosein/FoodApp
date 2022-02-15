@@ -41,7 +41,8 @@ fun BottomNavigationBar(
         content = {
             BottomNavigation(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)),
+                    .padding(horizontal = 2.dp)
+                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
                 backgroundColor = if (isDarkTheme) DarkGray else White,
                 elevation = 45.dp
             ) {

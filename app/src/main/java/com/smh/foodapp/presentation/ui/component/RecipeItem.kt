@@ -49,12 +49,14 @@ fun RecipeItem(
                 painter = painter,
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier
+                    .height(180.dp)
+                    .weight(1f)
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .size(200.dp)
+                    .height(180.dp)
                     .weight(1f)
                     .background(color = if (isDarkTheme) DarkGray else White)
                     .padding(12.dp),
@@ -78,7 +80,7 @@ fun RecipeItem(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp, bottom = 12.dp),
+                        .padding(top = 12.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Column(

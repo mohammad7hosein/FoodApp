@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.smh.foodapp.R
+import com.smh.foodapp.domain.model.ExtendedIngredient
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foody.models.Result
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ fun RecipeDetailScreen(
     isDarkTheme: Boolean,
     isNetworkAvailable: Boolean,
     navController: NavHostController,
-    recipe: Result?
+    recipe: Result
 ) {
     val pagerState = rememberPagerState(pageCount = 3)
 
@@ -34,7 +35,12 @@ fun RecipeDetailScreen(
         Column {
             TopBar(navController = navController)
             Tabs(pagerState = pagerState)
-            TabsContent(pagerState = pagerState)
+            TabsContent(
+                pagerState = pagerState,
+                isDarkTheme = isDarkTheme,
+                isNetworkAvailable = isNetworkAvailable,
+                recipe = recipe
+            )
         }
     }
 }
@@ -125,12 +131,21 @@ fun Tabs(pagerState: PagerState) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(
+    pagerState: PagerState,
+    isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
+    recipe: Result
+) {
     HorizontalPager(state = pagerState) { page ->
         when (page) {
             0 -> Overview()
-            1 -> Ingredient()
-            2 -> Instruction()
+            1 -> Ingredient(
+                isDarkTheme = isDarkTheme,
+                isNetworkAvailable = isNetworkAvailable,
+                ingredients = recipe.extendedIngredients
+            )
+            2 -> Instruction(url = recipe.sourceUrl)
         }
     }
 }

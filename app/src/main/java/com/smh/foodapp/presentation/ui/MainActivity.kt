@@ -10,9 +10,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.smh.foodapp.data.datastore.SettingsDataStore
 import com.smh.foodapp.domain.model.Screen
@@ -76,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     content = {
                         NavHost(
                             navController = navController,
-                            startDestination = Screen.Detail.route
+                            startDestination = Screen.Dashboard.route
                         ) {
                             composable(Screen.Dashboard.route) {
                                 LaunchedEffect(Unit) { bottomBarState.value = true }
@@ -102,17 +104,21 @@ class MainActivity : ComponentActivity() {
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                                 )
                             }
-                            composable(Screen.Detail.route) {
+                            composable(
+                                "${Screen.Detail.route}/{recipe}",
+                                arguments = listOf(
+                                    navArgument("recipe") {
+                                        type = NavType.ReferenceType
+                                    }
+                                )
+                            ) {
+                                val recipe = it.arguments?.getParcelable<Result>("recipe")
                                 LaunchedEffect(Unit) { bottomBarState.value = false }
-                                var recipe =
-                                    navController.previousBackStackEntry?.arguments?.getParcelable<Result>(
-                                        RECIPE_KEY
-                                    )
                                 RecipeDetailScreen(
                                     isDarkTheme = settingsDataStore.isDark.value,
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                                     navController = navController,
-                                    recipe = recipe
+                                    recipe = recipe!!
                                 )
                             }
                         }

@@ -1,7 +1,6 @@
-package com.smh.foody.models
+package com.smh.foodapp.domain.model
 
 import android.os.Parcelable
-import com.smh.foodapp.domain.model.ExtendedIngredient
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

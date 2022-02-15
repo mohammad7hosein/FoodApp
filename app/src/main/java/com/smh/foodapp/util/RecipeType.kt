@@ -3,7 +3,7 @@ package com.smh.foodapp.util
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.google.gson.Gson
-import com.smh.foody.models.Result
+import com.smh.foodapp.domain.model.Result
 
 class RecipeType : NavType<Result>(isNullableAllowed = false) {
 

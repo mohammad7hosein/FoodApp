@@ -1,5 +1,6 @@
 package com.smh.foodapp.presentation.ui.RecipeList
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -30,14 +31,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.smh.foodapp.R
-import com.smh.foodapp.domain.model.Screen
 import com.smh.foodapp.presentation.theme.FoodAppTheme
 import com.smh.foodapp.presentation.theme.viga
 import com.smh.foodapp.presentation.ui.component.AnimatedShimmer
 import com.smh.foodapp.presentation.ui.component.FilterDialog
 import com.smh.foodapp.presentation.ui.component.RecipeItem
-import com.smh.foodapp.util.Constants.Companion.RECIPE_KEY
 
 @ExperimentalComposeUiApi
 @Composable
@@ -225,8 +225,8 @@ fun RecipeListScreen(
                             minutes = recipe.readyInMinutes,
                             isVegan = recipe.vegan,
                             onClick = {
-//                                navController.currentBackStackEntry?.savedStateHandle?.set(RECIPE_KEY, recipe)
-//                                navController.navigate(Screen.Detail.route)
+                                val json = Uri.encode(Gson().toJson(recipe))
+                                navController.navigate("detail/$json")
                             }
                         )
                         Spacer(modifier = Modifier.height(16.dp))

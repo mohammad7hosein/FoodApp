@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smh.foody.models.Recipe
-import com.smh.foody.models.Result
+import com.smh.foodapp.domain.model.Result
 
 class RecipeTypeConverter {
 

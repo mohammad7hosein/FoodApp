@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.smh.foodapp.R
 import com.smh.foodapp.presentation.theme.FoodAppTheme
-import com.smh.foody.models.Result
+import com.smh.foodapp.domain.model.Result
 import kotlinx.coroutines.launch
 
 

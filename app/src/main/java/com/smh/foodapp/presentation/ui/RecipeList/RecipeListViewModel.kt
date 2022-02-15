@@ -24,7 +24,7 @@ import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_DIET
 import com.smh.foodapp.util.Constants.Companion.STATE_KEY_SELECTED_MEAL
 import com.smh.foodapp.util.DialogQueue
 import com.smh.foody.models.Recipe
-import com.smh.foody.models.Result
+import com.smh.foodapp.domain.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import retrofit2.Response

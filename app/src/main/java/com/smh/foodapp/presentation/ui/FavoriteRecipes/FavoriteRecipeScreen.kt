@@ -50,7 +50,7 @@ fun FavoriteRecipeScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             if (recipes.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),

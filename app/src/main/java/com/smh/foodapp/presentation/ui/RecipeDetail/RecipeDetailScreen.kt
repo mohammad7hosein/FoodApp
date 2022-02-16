@@ -1,14 +1,14 @@
 package com.smh.foodapp.presentation.ui.RecipeDetail
 
-import androidx.compose.foundation.background
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
@@ -32,6 +32,7 @@ fun RecipeDetailScreen(
     recipe: Result
 ) {
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     FoodAppTheme(
         darkTheme = isDarkTheme,
@@ -42,15 +43,24 @@ fun RecipeDetailScreen(
                 TopBar(
                     navController = navController,
                     viewModel = viewModel,
-                    scaffoldState,
                     recipe = recipe
                 )
                 CollapsableToolbar(
                     isDarkTheme = isDarkTheme,
                     recipe = recipe
                 )
-            }
 
+                LaunchedEffect(key1 = true) {
+                    viewModel.snackBarMessage.collectLatest { message ->
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+//                        scaffoldState.snackbarHostState.showSnackbar(
+//                            message,
+//                            null,
+//                            SnackbarDuration.Short
+//                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -59,19 +69,12 @@ fun RecipeDetailScreen(
 fun TopBar(
     navController: NavHostController,
     viewModel: RecipeDetailViewModel,
-    scaffoldState: ScaffoldState,
     recipe: Result
 ) {
 
     viewModel.setFavoriteIcon(recipe.id)
     val iconId = remember {
         viewModel.iconId
-    }
-
-    LaunchedEffect(key1 = true) {
-        viewModel.snackBarMessage.collectLatest { message ->
-            scaffoldState.snackbarHostState.showSnackbar(message,null, SnackbarDuration.Long)
-        }
     }
 
     Box(

@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,6 +32,8 @@ import com.smh.foodapp.util.RecipeType
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalMotionApi
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @AndroidEntryPoint
@@ -95,6 +99,7 @@ class MainActivity : ComponentActivity() {
                                 FavoriteRecipeScreen(
                                     isDarkTheme = settingsDataStore.isDark.value,
                                     isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+                                    navController = navController
                                 )
                             }
                             composable(Screen.FoodJoke.route) {

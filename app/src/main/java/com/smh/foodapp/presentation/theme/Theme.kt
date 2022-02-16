@@ -38,8 +38,6 @@ private val LightColorPalette = lightColors(
 fun FoodAppTheme(
     darkTheme: Boolean,
     isNetworkAvailable: Boolean,
-//    displayProgressBar: Boolean,
-//    scaffoldState: ScaffoldState,
     dialogQueue: Queue<GenericDialogInfo>? = null,
     content: @Composable () -> Unit,
 ) {
@@ -65,14 +63,6 @@ fun FoodAppTheme(
                 ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
                 content()
             }
-//            CircularIndeterminateProgressBar(isDisplayed = displayProgressBar, 0.3f)
-//            DefaultSnackbar(
-//                snackbarHostState = scaffoldState.snackbarHostState,
-//                onDismiss = {
-//                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-//                },
-//                modifier = Modifier.align(Alignment.BottomCenter)
-//            )
             ProcessDialogQueue(
                 dialogQueue = dialogQueue,
             )

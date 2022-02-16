@@ -202,7 +202,9 @@ fun RecipeListScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Button(onClick = { viewModel.onEvent(RecipeListEvent.Filter) }) {
+                    Button(
+                        modifier = Modifier.padding(4.dp),
+                        onClick = { viewModel.onEvent(RecipeListEvent.Filter) }) {
                         Text(
                             text = "Try Again",
                             color = MaterialTheme.colors.onBackground

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -55,6 +56,7 @@ fun MotionLayoutHeader(
         Text(
             text = title,
             modifier = Modifier
+                .padding(horizontal = 12.dp)
                 .layoutId("title")
                 .wrapContentHeight(),
             color = MaterialTheme.colors.onBackground,

@@ -22,11 +22,11 @@ fun ConnectivityMonitor(
             .fillMaxWidth()
             .background(color = Red)) {
             Text(
-                "No network connection",
+                "No Network Connection",
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(8.dp),
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onBackground
             )
         }

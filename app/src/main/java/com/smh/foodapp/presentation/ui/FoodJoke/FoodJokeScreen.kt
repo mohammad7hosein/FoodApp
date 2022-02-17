@@ -1,7 +1,11 @@
 package com.smh.foodapp.presentation.ui.FoodJoke
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +28,7 @@ fun FoodJokeScreen(
 
     val dialogQueue = viewModel.dialogQueue
     val state = viewModel.state.value
+    val scrollState = rememberScrollState()
 
     FoodAppTheme(
         darkTheme = isDarkTheme,
@@ -67,7 +72,9 @@ fun FoodJokeScreen(
                         )
                 ) {
                     Text(
-                        modifier = Modifier.padding(20.dp),
+                        modifier = Modifier
+                            .verticalScroll(scrollState)
+                            .padding(20.dp),
                         text = state.text,
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onBackground,

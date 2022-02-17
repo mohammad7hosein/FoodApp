@@ -21,10 +21,10 @@ import com.smh.foodapp.domain.model.*
 fun FilterDialog(
     selectedMealType: MealType,
     selectedDietType: DietType,
-    selectedCuisineType: CuisineType,
     onSelectedMealTypeChanged: (String) -> Unit,
     onSelectedDietTypeChanged: (String) -> Unit,
-    onSelectedCuisineTypeChanged: (String) -> Unit,
+//    selectedCuisineType: CuisineType,
+//    onSelectedCuisineTypeChanged: (String) -> Unit,
     onFilterTypeChanged: () -> Unit,
     isDialogOpen: MutableState<Boolean>
 ) {
@@ -34,24 +34,23 @@ fun FilterDialog(
             onDismissRequest = { isDialogOpen.value = false }
         ) {
             Surface(
-                modifier = Modifier
-                    .width(600.dp)
-                    .height(500.dp),
+                modifier = Modifier.wrapContentSize(),
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colors.background
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .wrapContentSize()
                         .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        LazyColumn {
+                        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
                             item {
                                 Text(
                                     text = "MealType",
@@ -71,7 +70,7 @@ fun FilterDialog(
                                 )
                             }
                         }
-                        LazyColumn {
+                        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
                             item {
                                 Text(
                                     text = "DietType",
@@ -91,28 +90,27 @@ fun FilterDialog(
                                 )
                             }
                         }
-                        LazyColumn {
-                            item {
-                                Text(
-                                    text = "Cuisine",
-                                    style = MaterialTheme.typography.body1,
-                                    color = MaterialTheme.colors.onBackground,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(bottom = 16.dp)
-                                )
-                            }
-                            items(getAllCuisineType()) { item ->
-                                FilterDialogItem(
-                                    filterType = item.text,
-                                    isSelected = selectedCuisineType == item,
-                                    onSelectedFilterTypeChanged = {
-                                        onSelectedCuisineTypeChanged(it)
-                                    }
-                                )
-                            }
-                        }
+//                        LazyColumn {
+//                            item {
+//                                Text(
+//                                    text = "Cuisine",
+//                                    style = MaterialTheme.typography.body1,
+//                                    color = MaterialTheme.colors.onBackground,
+//                                    textAlign = TextAlign.Center,
+//                                    modifier = Modifier.padding(bottom = 16.dp)
+//                                )
+//                            }
+//                            items(getAllCuisineType()) { item ->
+//                                FilterDialogItem(
+//                                    filterType = item.text,
+//                                    isSelected = selectedCuisineType == item,
+//                                    onSelectedFilterTypeChanged = {
+//                                        onSelectedCuisineTypeChanged(it)
+//                                    }
+//                                )
+//                            }
+//                        }
                     }
-                    Spacer(modifier = Modifier.height(32.dp))
                     Button(modifier = Modifier
                         .fillMaxWidth()
                         .background(

@@ -50,7 +50,7 @@ fun FoodJokeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 48.dp),
+                    .padding(bottom = 52.dp, top = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(

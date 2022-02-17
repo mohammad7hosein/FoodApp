@@ -19,7 +19,7 @@ val Typography = Typography(
     h3 = TextStyle(
         fontFamily = viga,
         fontWeight = FontWeight.Normal,
-        fontSize = 48.sp
+        fontSize = 40.sp
     ),
     h5 = TextStyle(
         fontFamily = viga,

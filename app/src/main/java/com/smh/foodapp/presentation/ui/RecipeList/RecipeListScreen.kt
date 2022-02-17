@@ -54,7 +54,7 @@ fun RecipeListScreen(
 
     val selectedMealType = viewModel.selectedMealType.value
     val selectedDietType = viewModel.selectedDietType.value
-    val selectedCuisineType = viewModel.selectedCuisineType.value
+//    val selectedCuisineType = viewModel.selectedCuisineType.value
 
     val isDialogOpen = remember {
         mutableStateOf(false)
@@ -180,10 +180,8 @@ fun RecipeListScreen(
             FilterDialog(
                 selectedMealType = selectedMealType,
                 selectedDietType = selectedDietType,
-                selectedCuisineType = selectedCuisineType,
                 onSelectedMealTypeChanged = viewModel::onSelectedMealTypeChanged,
                 onSelectedDietTypeChanged = viewModel::onSelectedDietTypeChanged,
-                onSelectedCuisineTypeChanged = viewModel::onSelectedCuisineTypeChanged,
                 isDialogOpen = isDialogOpen,
                 onFilterTypeChanged = {
                     viewModel.onEvent(

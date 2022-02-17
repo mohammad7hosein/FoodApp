@@ -39,7 +39,7 @@ class RecipeListViewModel @Inject constructor(
 
     val selectedMealType: MutableState<MealType> = mutableStateOf(MealType.MAIN_COURSE)
     val selectedDietType: MutableState<DietType> = mutableStateOf(DietType.GLUTEN_FREE)
-    val selectedCuisineType: MutableState<CuisineType> = mutableStateOf(CuisineType.SPANISH)
+//    val selectedCuisineType: MutableState<CuisineType> = mutableStateOf(CuisineType.SPANISH)
 
     val recipes: MutableState<List<Result>> = mutableStateOf(ArrayList())
     val isLoading = mutableStateOf(false)
@@ -61,9 +61,9 @@ class RecipeListViewModel @Inject constructor(
         savedStateHandle.get<DietType>(STATE_KEY_SELECTED_DIET)?.let { c ->
             setSelectedDietType(c)
         }
-        savedStateHandle.get<CuisineType>(STATE_KEY_SELECTED_CUISINE)?.let { c ->
-            setSelectedCuisineType(c)
-        }
+//        savedStateHandle.get<CuisineType>(STATE_KEY_SELECTED_CUISINE)?.let { c ->
+//            setSelectedCuisineType(c)
+//        }
         showRecipes(applyQueries())
     }
 
@@ -140,7 +140,7 @@ class RecipeListViewModel @Inject constructor(
         queries[QUERY_API_KEY] = API_KEY
         queries[QUERY_TYPE] = selectedMealType.value.text
         queries[QUERY_DIET] = selectedDietType.value.text
-        queries[QUERY_CUISINE] = selectedCuisineType.value.text
+//        queries[QUERY_CUISINE] = selectedCuisineType.value.text
         queries[QUERY_ADD_RECIPE_INFORMATION] = "true"
         queries[QUERY_FILL_INGREDIENTS] = "true"
         return queries
@@ -176,14 +176,13 @@ class RecipeListViewModel @Inject constructor(
         savedStateHandle.set(STATE_KEY_SELECTED_DIET, dietType)
     }
 
-    fun onSelectedCuisineTypeChanged(meal: String) {
-        val newCuisineType = getCuisineType(meal)
-        setSelectedCuisineType(newCuisineType)
-    }
-
-    private fun setSelectedCuisineType(cuisineType: CuisineType) {
-        selectedCuisineType.value = cuisineType
-        savedStateHandle.set(STATE_KEY_SELECTED_CUISINE, cuisineType)
-    }
+//    fun onSelectedCuisineTypeChanged(meal: String) {
+//        val newCuisineType = getCuisineType(meal)
+//        setSelectedCuisineType(newCuisineType)
+//    }
+//    private fun setSelectedCuisineType(cuisineType: CuisineType) {
+//        selectedCuisineType.value = cuisineType
+//        savedStateHandle.set(STATE_KEY_SELECTED_CUISINE, cuisineType)
+//    }
 
 }

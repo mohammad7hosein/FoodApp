@@ -48,7 +48,9 @@ fun AnimatedShimmer() {
 fun ShimmerItem(brush: Brush) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
             .padding(16.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -60,7 +62,8 @@ fun ShimmerItem(brush: Brush) {
             )
             Column(
                 modifier = Modifier
-                    .height(180.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
                     .weight(1f)
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -35,7 +35,8 @@ fun RecipeItem(
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .wrapContentHeight()
             .clickable(onClick = onClick)
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -55,8 +56,8 @@ fun RecipeItem(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .height(180.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
                     .weight(1f)
                     .background(color = if (isDarkTheme) DarkGray else White)
                     .padding(12.dp),

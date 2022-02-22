@@ -124,7 +124,11 @@ fun RecipeListScreen(
                         )
                     }
                     BasicTextField(
-                        value = searchText.text,
+                        value =
+                        if (searchText.isHintVisible)
+                            searchText.hint
+                        else
+                            searchText.text,
                         onValueChange = {
                             viewModel.onEvent(RecipeListEvent.EnteredText(it))
                         },
@@ -150,15 +154,6 @@ fun RecipeListScreen(
                                 viewModel.onEvent(RecipeListEvent.ChangeTextFocus(it))
                             }
                     )
-                    if (searchText.isHintVisible)
-                        Text(
-                            text = searchText.hint,
-                            style = TextStyle(
-                                color = MaterialTheme.colors.onSurface,
-                                fontFamily = viga,
-                                fontSize = 14.sp
-                            )
-                        )
                 }
                 Box(
                     contentAlignment = Alignment.Center,
